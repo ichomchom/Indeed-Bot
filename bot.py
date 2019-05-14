@@ -1,15 +1,17 @@
 from selenium import webdriver
 from selenium.webdriver.common.keys import Keys
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 
 import info
+
 class IndeedBot:
     def __init__(self):
 
         # create a new Firefox session
         self.driver = webdriver.Firefox()
 
-            # open indeed
+        # open indeed
         self.driver.get('https://secure.indeed.com/account/login')
 
         # Get email field
@@ -18,12 +20,14 @@ class IndeedBot:
 
         # Get password field
         passElem = self.driver.find_element_by_id('login-password-input')
-        passElem.send_keys(info.passwd)
+        passElem.send_keys(info.password)
         passElem.submit()
 
+        self.driver.implicitly_wait(10)
+
         # Redirect to main page
-        self.driver.find_element_by_class_name('icl-Logo').click()
-        
+        self.driver.find_element_by_class_name('icl-DesktopGlobalHeader-logoLink').click()
+
 
         # get what field
         whatElem = self.driver.find_element_by_id('text-input-what')
@@ -39,7 +43,13 @@ class IndeedBot:
         # TODO: get apply job with indeed only
         # <div class="iaP">
         # <span class="iaLabel">Apply with your Indeed Resume</span>
-        
+        #self.driver.find_element_by_class_name('iaP').click()
+        jobList = list(self.driver.find_elements_by_class_name('jobsearch-SerpJobCard unifiedRow row result clickcard'))
+
+        print(jobList)
+
+
+
         # TODO: get job card
         # class="jobsearch-SerpJobCard unifiedRow row result clickcard"
         
