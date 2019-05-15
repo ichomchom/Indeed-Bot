@@ -1,4 +1,5 @@
 from selenium import webdriver
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
@@ -8,8 +9,13 @@ import info
 class IndeedBot:
     def __init__(self):
 
-        # create a new Firefox session
-        self.driver = webdriver.Firefox()
+        # Create headless chrome
+        options = Options()
+        #options.headless = True
+
+        # create a new Chrome session
+        self.driver = webdriver.Chrome(options=options)
+
 
         # open indeed
         self.driver.get('https://secure.indeed.com/account/login')
@@ -44,9 +50,22 @@ class IndeedBot:
         # <div class="iaP">
         # <span class="iaLabel">Apply with your Indeed Resume</span>
         #self.driver.find_element_by_class_name('iaP').click()
-        jobList = list(self.driver.find_elements_by_class_name('jobsearch-SerpJobCard unifiedRow row result clickcard'))
+
+        #jobList = self.driver.find_element_by_class_name('jobsearch-SerpJobCard unifiedRow row result clickcard')
+        jobList = self.driver.find_elements_by_class_name('iaP')
+
+        for job in jobList:
+            job.click()
+            if self.driver.find_element_by_class_name('icl-Button icl-Button--block icl-Button--tertiary').is_enabled():
+                continue
+
+            self.driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
+            self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-continue').click()
+            self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-submit').click()
+            print('success')
 
         print(jobList)
+
 
 
 
