@@ -11,7 +11,7 @@ class IndeedBot:
 
         # Create headless chrome
         options = Options()
-        #options.headless = True
+        options.headless = True
 
         # create a new Chrome session
         self.driver = webdriver.Chrome(options=options)
@@ -37,7 +37,7 @@ class IndeedBot:
 
         # get what field
         whatElem = self.driver.find_element_by_id('text-input-what')
-        whatElem.clear()
+        #whatElem.clear()
         whatElem.send_keys(info.title)
 
         # get where field
@@ -52,18 +52,25 @@ class IndeedBot:
         #self.driver.find_element_by_class_name('iaP').click()
 
         #jobList = self.driver.find_element_by_class_name('jobsearch-SerpJobCard unifiedRow row result clickcard')
+        
+        # Job with apply by indeed
         jobList = self.driver.find_elements_by_class_name('iaP')
 
+        # Go through the jobList and open in new tab
         for job in jobList:
             job.click()
-            if self.driver.find_element_by_class_name('icl-Button icl-Button--block icl-Button--tertiary').is_enabled():
-                continue
 
-            self.driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
-            self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-continue').click()
-            self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-submit').click()
-            print('success')
+            #self.driver.find_element_by_id('indeedApplyButtonContainer').click()
+            
+            #self.driver.implicitly_wait(10)
+            
+            #self.driver.find_element_by_id('input-applicant.name').send_keys(info.name)
+            #self.driver.find_element_by_id('input-applicant.email').send_keys(info.email)
 
+            #self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-continue').click()
+            #self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-submit').click()
+            jobTitle = self.driver.find_element_by_class_name('icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title')
+            print(jobTitle)
         print(jobList)
 
 
