@@ -60,7 +60,7 @@ class IndeedBot:
         for job in jobList:
             job.click()
 
-            #self.driver.find_element_by_id('indeedApplyButtonContainer').click()
+            self.driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
             
             #self.driver.implicitly_wait(10)
             
