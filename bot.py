@@ -11,7 +11,7 @@ class IndeedBot:
 
         # Create headless chrome
         options = Options()
-        options.headless = True
+        #options.headless = True
 
         # create a new Chrome session
         self.driver = webdriver.Chrome(options=options)
@@ -29,6 +29,7 @@ class IndeedBot:
         passElem.send_keys(info.password)
         passElem.submit()
 
+        print('Logging in...')
         self.driver.implicitly_wait(10)
 
         # Redirect to main page
@@ -59,8 +60,9 @@ class IndeedBot:
         # Go through the jobList and open in new tab
         for job in jobList:
             job.click()
-
-            self.driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
+            title = self.driver.title
+            print('Applying job ' + title)
+            #self.driver.find_element_by_css_selector('#indeedApplyButtonContainer > span > div.jobsearch-IndeedApplyButton-buttonWrapper.icl-u-lg-block.icl-u-xs-hide > button').click()
             
             #self.driver.implicitly_wait(10)
             
@@ -69,8 +71,7 @@ class IndeedBot:
 
             #self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-continue').click()
             #self.driver.find_element_by_class_name('icl-Button icl-Button--primary icl-Button--lg icl-u-xs-my--sm ia-FormActionButtons-submit').click()
-            jobTitle = self.driver.find_element_by_class_name('icl-u-xs-mb--xs icl-u-xs-mt--none jobsearch-JobInfoHeader-title')
-            print(jobTitle)
+            
         print(jobList)
 
 
