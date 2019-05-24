@@ -18,16 +18,34 @@ whereElem.submit()
 jobList = driver.find_elements_by_class_name('iaP')
 action = ActionChains(driver)
 
+# Get the main page with window handles
 main = driver.window_handles[0]
-for job in jobList:
-    job.click()
-    jobWin = driver.window_handles[1]
-    driver.switch_to_window(jobWin)
+
+# Open new window for each jobs found
+for i in range(1, len(jobList)):
+    jobList[i].click()
+
+    # assign new window just opened
+    jobWin = driver.window_handles[i]
+
+    # Switch to new window
+    driver.switch_to.window(jobWin)
+
+    # Click apply job
     driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
-    
+    iframe = driver.find_element_by_xpath('/html/body/iframe')
+    WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(iframe))
 
-    
+    driver.find_element_by_xpath('//*[@id="input-applicant.name"]').send_keys('phan.huey389@gmail.com')
+    driver.find_element_by_xpath('//*[@id="form-action-continue"]').click()
 
+    # Close the current tab
+    #driver.close()
+
+    driver.switch_to.window(main)
+    driver.implicitly_wait(10)
+
+driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
 """
 #driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
 driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
@@ -54,7 +72,7 @@ driver.switch_to_frame
 
 driver.implicitly_wait(10)
 
-driver.find_element_by_id('input-applicant.name').send_keys('Huey Phan')
+
 
 
 #nameElem = driver.find_element_by_id('input-applicant.name')
