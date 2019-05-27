@@ -4,6 +4,7 @@ from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver import ActionChains
+from selenium.webdriver.common.by import By
 
 driver = webdriver.Chrome()
 
@@ -31,12 +32,20 @@ for i in range(1, len(jobList)):
     # Switch to new window
     driver.switch_to.window(jobWin)
 
+    driver.implicitly_wait(10)
+
     # Click apply job
     driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
-    iframe = driver.find_element_by_xpath('/html/body/iframe')
-    WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it(iframe))
 
-    driver.find_element_by_xpath('//*[@id="input-applicant.name"]').send_keys('phan.huey389@gmail.com')
+    driver.implicitly_wait(10)
+    iframe = driver.find_element_by_xpath('/html/body/iframe')
+    #WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, '/html/body/iframe')))
+
+    driver.switch_to.frame(iframe)
+    driver.implicitly_wait(10)
+    print(iframe)
+
+    driver.find_element_by_name('applicant.name').send_keys('phan.huey389@gmail.com')
     driver.find_element_by_xpath('//*[@id="form-action-continue"]').click()
 
     # Close the current tab
@@ -46,6 +55,7 @@ for i in range(1, len(jobList)):
     driver.implicitly_wait(10)
 
 driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
+
 """
 #driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
 driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
