@@ -43,9 +43,9 @@ for i in range(1, len(jobList)):
 
     driver.switch_to.frame(iframe)
     driver.implicitly_wait(10)
-    print(iframe)
+    print(iframe.value_of_css_property)
 
-    driver.find_element_by_name('applicant.name').send_keys('phan.huey389@gmail.com')
+    driver.find_element_by_xpath('//*[@id="input-applicant.name"]').send_keys('phan.huey398@gmail.com')
     driver.find_element_by_xpath('//*[@id="form-action-continue"]').click()
 
     # Close the current tab

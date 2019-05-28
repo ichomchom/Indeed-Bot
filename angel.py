@@ -15,7 +15,7 @@ driver = webdriver.Chrome()
 # Headless chrome driver
 #options.headless = True
 
-# Open the driver and go to angel.com
+# Open the driver and go to angel.co
 driver.get('https://angel.co/')
 
 # Find the log in button
@@ -39,7 +39,7 @@ while True:
     driver.find_element_by_xpath('//*[@id="startups_content"]/div[1]/div[5]/div/div/div[2]/div[2]/table/tbody/tr/td[2]/div/div[2]/a[1]').click()
 
     # Switch to popup frame
-    driver.switch_to.frame
+    #driver.switch_to.frame
 
     # Find the xpath for the apply button
     apply = driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button')
