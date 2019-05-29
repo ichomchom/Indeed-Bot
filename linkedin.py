@@ -16,21 +16,27 @@ driver = webdriver.Chrome()
 #options.headless = True
 
 # Open the driver and go to monster.com
-driver.get('https://login20.monster.com')
+driver.get('https://www.linkedin.com/')
+
+driver.find_element_by_xpath('/html/body/nav/a[3]').click()
 
 # Log in
-driver.find_element_by_xpath('//*[@id="EmailAddress"]').send_keys(info.email)
-driver.find_element_by_xpath('//*[@id="Password"]').send_keys(info.password)
-driver.find_element_by_xpath('//*[@id="btn-login"]').click()
+driver.find_element_by_xpath('//*[@id="username"]').send_keys(info.email)
+driver.find_element_by_xpath('//*[@id="password"]').send_keys(info.password)
+driver.find_element_by_xpath('//*[@id="app__container"]/main/div/form/div[3]/button').click()
 
-# Click on job search with recent search
-driver.find_element_by_xpath('//*[@id="hp-job-search"]').click()
+# Go to Jobs
+driver.find_element_by_xpath('//*[@id="jobs-nav-item"]/a').click()
+
+
+# Fill out job title and location
+driver.find_element_by_xpath('//*[@id="ember611"]/span[1]').click()
 
 # Wait 10s for page to load
 driver.implicitly_wait(10)
 
 # Create jobs list
-jobs = driver.find_elements_by_class_name('summary')
+
 
 # Main window
 main = driver.window_handles[0]
@@ -53,12 +59,9 @@ for job in jobs:
 
         #elif driver.find_element_by_xpath('//*[@id="SpeedApply"]/section/div/div[2]/a').is_enabled():
             #continue
-
         # Apply using monster only click apply
         else:
             driver.find_element_by_xpath('//*[@id="applybtn"]').click()
-        
-        # TODO: Fix when go back to main page go to next job
 
             # If job already applied, alert pop up, then go back to main page
             if driver.find_element_by_xpath('//*[@id="ApplyAlert"]').is_enabled():
