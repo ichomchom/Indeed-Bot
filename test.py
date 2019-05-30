@@ -33,20 +33,15 @@ for i in range(1, len(jobList)):
     driver.switch_to.window(jobWin)
 
     driver.implicitly_wait(10)
-
     # Click apply job
     driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
 
-    driver.implicitly_wait(10)
-    iframe = driver.find_element_by_xpath('/html/body/iframe')
-    #WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, '/html/body/iframe')))
+    #iframe = driver.find_element_by_xpath('/html/body/iframe')
+    WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, '/html/body/iframe')))
 
-    driver.switch_to.frame(iframe)
-    driver.implicitly_wait(10)
-    print(iframe.value_of_css_property)
 
-    driver.find_element_by_xpath('//*[@id="input-applicant.name"]').send_keys('phan.huey398@gmail.com')
-    driver.find_element_by_xpath('//*[@id="form-action-continue"]').click()
+    driver.find_element_by_id('input-applicant.name').send_keys('phan.huey398@gmail.com')
+    driver.find_element_by_xpath('//*[@id="form-action-cancel"]').click()
 
     # Close the current tab
     #driver.close()
