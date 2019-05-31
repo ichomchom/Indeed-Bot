@@ -10,6 +10,8 @@ driver = webdriver.Chrome()
 
 driver.get('https://www.indeed.com/')
 
+driver.find_element_by_xpath('/html/body/div[2]/div/section/div/div[2]/button').click()
+
 driver.find_element_by_xpath('//*[@id="text-input-what"]').send_keys('software engineer')
 whereElem = driver.find_element_by_xpath('//*[@id="text-input-where"]')
 whereElem.send_keys(Keys.CONTROL, 'a')
@@ -34,20 +36,27 @@ for i in range(1, len(jobList)):
 
     driver.implicitly_wait(10)
     # Click apply job
+   
+
     driver.find_element_by_class_name('jobsearch-IndeedApplyButton-contentWrapper').click()
+    
 
     #iframe = driver.find_element_by_xpath('/html/body/iframe')
-    WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, '/html/body/iframe')))
+    #WebDriverWait(driver, 10).until(EC.frame_to_be_available_and_switch_to_it((By.XPATH, "//iframe[contains(@src,'resumeapply')]")))
+    parentIframe = WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@id,'modal-iframe')]")))    
+    driver.switch_to.frame(parentIframe)
 
+    childIframe =  WebDriverWait(driver, 10).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
+    driver.switch_to.frame(childIframe)   
 
-    driver.find_element_by_id('input-applicant.name').send_keys('phan.huey398@gmail.com')
-    driver.find_element_by_xpath('//*[@id="form-action-cancel"]').click()
+    #driver.find_element_by_xpath('//*[@id="input-applicant.name"]').send_keys('phan.huey398@gmail.com')
+    #driver.find_element_by_xpath('//*[@id="form-action-cancel"]').click()
 
     # Close the current tab
     #driver.close()
 
-    driver.switch_to.window(main)
-    driver.implicitly_wait(10)
+    #driver.switch_to.window(main)
+    #driver.implicitly_wait(10)
 
 driver.find_element_by_xpath('//*[@id="indeedApplyButtonContainer"]/span/div[1]/button/div').click()
 
