@@ -57,11 +57,11 @@ class IndeedBot:
         main = self.driver.window_handles[0]
 
         # Go through the jobList and open in new tab
-        for i in range(1, len(jobList)):
-            jobList[i].click()
+        for job in jobList:
+            job.click()
 
             # get new tab and switch to it
-            jobWin = self.driver.window_handles[i]
+            jobWin = self.driver.window_handles[1]
             self.driver.switch_to.window(jobWin)
             title = self.driver.title
             print('Applying job ' + title)
@@ -77,14 +77,15 @@ class IndeedBot:
             childIframe =  WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
             self.driver.switch_to.frame(childIframe)   
 
-            # Click on continue
-            if self.driver.find_element_by_xpath('//*[@id="close-popup"]').is_enabled:
-                self.driver.find_element_by_xpath('//*[@id="close-popup"]').click()
+            # Click on continue button if there any
+            while self.driver.find_element_by_xpath('//*[@id="form-action-continue"]'):
+                WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).click()
+                
             else:
-                self.driver.find_element_by_xpath('//*[@id="form-action-continue"]').click()
+            #If no button close the window and switch to main window
+                self.driver.close()
+                self.driver.switch_to.window(main)
 
-            # Switch to main window
-            self.driver.switch_to.window(main)
-            self.driver.implicitly_wait(10)
+
 
 IndeedBot()

@@ -36,34 +36,33 @@ jobs = driver.find_elements_by_class_name('summary')
 main = driver.window_handles[0]
 
 for job in jobs:
-    try:
-        # Click on each job
-        job.click()
 
-        driver.implicitly_wait(20)
+    # Click on each job
+    job.click()
 
-        # Click on apply job
-        driver.find_element_by_xpath('//*[@id="PrimaryJobApply"]').click()
+    driver.implicitly_wait(20)
+
+    # Click on apply job
+    driver.find_element_by_xpath('//*[@id="PrimaryJobApply"]').click()
         
-        # If open new page, go to that page and close the page
-        if len(driver.window_handles) == 2:
-            driver.switch_to_window(driver.window_handles[1])
-            driver.close()
-            driver.switch_to_window(main)
+    # If open new page, go to that page and close the page
+    if len(driver.window_handles) == 2:
+        driver.switch_to_window(driver.window_handles[1])
+        driver.close()
+        driver.switch_to_window(main)
 
         #elif driver.find_element_by_xpath('//*[@id="SpeedApply"]/section/div/div[2]/a').is_enabled():
             #continue
 
-        # Apply using monster only click apply
-        else:
-            driver.find_element_by_xpath('//*[@id="applybtn"]').click()
-        
+    # Apply using monster only click apply
+    else:
+        driver.find_element_by_xpath('//*[@id="applybtn"]').click()
+           
         # TODO: Fix when go back to main page go to next job
 
-            # If job already applied, alert pop up, then go back to main page
-            if driver.find_element_by_xpath('//*[@id="ApplyAlert"]').is_enabled():
-                driver.back()
-                driver.back()
-                continue
-    except Exception as er:
-        print(er)
+        # If job already applied, alert pop up, then go back to main page
+        if driver.find_element_by_xpath('//*[@id="ApplyAlert"]').is_enabled():
+            driver.back()
+            driver.back()
+            
+        driver.find_element_by_xpath('//*[@id="ListSwitch"]/i').click()
