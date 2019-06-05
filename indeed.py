@@ -70,19 +70,23 @@ class IndeedBot:
             WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'jobsearch-IndeedApplyButton-contentWrapper'))).click()
 
             # Locate the parent iframe and switch to it
-            parentIframe = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@id,'modal-iframe')]")))    
+            parentIframe = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@id,'modal-iframe')]")))    
             self.driver.switch_to.frame(parentIframe)
 
             # Locate the parent iframe and switch to it
-            childIframe =  WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
+            childIframe =  WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
             self.driver.switch_to.frame(childIframe)   
 
             # Click on continue button if there any
-            while self.driver.find_element_by_xpath('//*[@id="form-action-continue"]'):
-                WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).click()
+            while self.driver.find_element_by_xpath('//*[@id="form-action-continue"]').is_enabled():
+                self.driver.implicitly_wait(20)
+                WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).click()
                 
             else:
+                break
             #If no button close the window and switch to main window
+            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="form-action-submit"]'))).click()
+            if self.driver.find_element_by_xpath('//*[@id="ia-container"]/div/div[2]/a'):
                 self.driver.close()
                 self.driver.switch_to.window(main)
 

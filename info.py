@@ -1,5 +1,5 @@
 # input.py get users input 
-email = input('Enter your email: ')
-password = input('Enter your password: ')
-title = input('Enter your job title: ')
-zipCode = input('Enter your zip code: ')
+email = 'phan.huey389@gmail.com'
+password = 'hongbiet123'
+title = 'software engineer'
+zipCode = '91101'
