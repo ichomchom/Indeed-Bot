@@ -1,0 +1,13 @@
+Dear HR Manager,
+
+This letter is to express my interest in working for %s at %s. With a Bachelor of Science in Computer Science, and experience with some languages such as Java, Python, C#, and some technologies such as NodeJS, MongoDB, MySQL, Git. I also experienced in troubleshooting, diagnosing, and solving problems in a timely and accurate manner. I am confident 
+that I can be an asset to your organization.
+
+As continuing to learn new languages and development techniques, I enjoy being challenged and engaging with projects that require me to work outside of my comfort. I truly believe in continued education and research, and I hope to bring in my knowledge, organization skill, and positive attitudes that can assist and benefit your company. 
+
+I can be reached anytime via my cell phone, %s or via email at %s. Thank you for your time and consideration.
+
+Sincerely,
+
+
+%s

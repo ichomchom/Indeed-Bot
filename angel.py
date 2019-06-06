@@ -9,6 +9,12 @@ from bs4 import BeautifulSoup
 
 import info
 
+# Open Cover Letter
+cv = open('./cv.txt', 'r')
+
+# Read the content
+content = cv.read()
+
 # Create chrome driver
 driver = webdriver.Chrome()
 
@@ -42,21 +48,27 @@ while True:
     #driver.switch_to.frame
 
     # Find the xpath for the apply button
-    apply = driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button')
+    #apply = driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button')
 
+    # Fill out Cover Letter
+    note = driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[13]/div/div/div/div/div/div[1]/div/textarea')
+    companyName = driver.find_element_by_class_name('startup-title').text[9::]
+    position = driver.find_element_by_class_name('job-title').text
+    
+    note.send_keys(content % (position, companyName, info.phone, info.email, info.name))
     # Check if the apply button available or not
-    if apply.is_enabled:
-        apply.click()
-        driver.implicitly_wait(10)
-    else:
-        # If not available click cancel
-        driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button').click()
+    # if apply.is_enabled:
+    #     apply.click()
+    #     driver.implicitly_wait(10)
+    # else:
+    #     # If not available click cancel
+    #     driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button').click()
 
     # Close the popup frame
-    driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[2]/div/div[3]/button').click()
+    #driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[2]/div/div[3]/button').click()
 
     # Refresh browser to reapply the job
-    driver.refresh()
+    #driver.refresh()
 
 # TODO: Find all jobs to open and apply instead of refresh
 """
