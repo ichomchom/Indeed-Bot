@@ -15,17 +15,19 @@ cv = open('./cv.txt', 'r')
 # Read the content
 content = cv.read()
 
-# Create chrome driver
-driver = webdriver.Chrome()
-
 # Headless chrome driver
+options = Options()
 #options.headless = True
+
+# Create chrome driver
+driver = webdriver.Chrome(options = options)
+
 
 # Open the driver and go to angel.co
 driver.get('https://angel.co/')
 
 # Find the log in button
-driver.find_element_by_xpath('//*[@id="root"]/div[2]/div/div/div[1]/div[1]/div/div[2]/div[1]/a[2]').click()
+driver.find_element_by_xpath("//a[@href='/login']").click()
 
 # Fill out email and password for login
 driver.find_element_by_xpath('//*[@id="user_email"]').send_keys(info.email)
@@ -33,22 +35,15 @@ driver.find_element_by_xpath('//*[@id="user_password"]').send_keys(info.password
 driver.find_element_by_xpath('//*[@id="new_user"]/div[2]/input').click()
 
 
-driver.implicitly_wait(10)
+driver.implicitly_wait(30)
 
-#html = driver.page_source
+# Get number of jobs
+remain = driver.find_element_by_xpath('//*[@id="startups_content"]/div[1]/div[2]/div[1]/div[2]/div[1]/span').text
 
-#soup = BeautifulSoup(html)
-#jobs = soup.find_all('data-startup_ids')
-
-while True:
+for i in range(int(remain)):
+ 
     # Find the blue button to apply
-    driver.find_element_by_xpath('//*[@id="startups_content"]/div[1]/div[5]/div/div/div[2]/div[2]/table/tbody/tr/td[2]/div/div[2]/a[1]').click()
-
-    # Switch to popup frame
-    #driver.switch_to.frame
-
-    # Find the xpath for the apply button
-    #apply = driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button')
+    driver.find_element_by_xpath("(//a[contains(.,'Apply Now')])[1]").click()
 
     # Fill out Cover Letter
     note = driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[13]/div/div/div/div/div/div[1]/div/textarea')
@@ -56,19 +51,28 @@ while True:
     position = driver.find_element_by_class_name('job-title').text
     
     note.send_keys(content % (position, companyName, info.phone, info.email, info.name))
+
+    print('Apply for ' + position + ' at' + companyName + '.....')
+
+    driver.implicitly_wait(10)
+    # Find the xpath for the apply button
+    apply = driver.find_element_by_xpath("//button[contains(.,'Send Application')]")
+
     # Check if the apply button available or not
-    # if apply.is_enabled:
-    #     apply.click()
-    #     driver.implicitly_wait(10)
-    # else:
-    #     # If not available click cancel
-    #     driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[1]/div/div[2]/button').click()
+    if apply.is_enabled:
+        apply.click()
+        driver.implicitly_wait(10)
+    else:
+        # If not available click cancel
+        driver.find_element_by_xpath("//button[contains(., 'Cancel')]").click()
 
-    # Close the popup frame
-    #driver.find_element_by_xpath('//*[@id="layouts-base-body"]/div[12]/div/div/div/div/div/div[2]/div/div[3]/button').click()
-
-    # Refresh browser to reapply the job
-    #driver.refresh()
+    #Close the popup frame
+    driver.find_element_by_xpath("//button[contains(.,'Close')]").click()
+    
+    print('Done...')
+    
+    #Refresh browser to reapply the job
+    driver.refresh()
 
 # TODO: Find all jobs to open and apply instead of refresh
 """
