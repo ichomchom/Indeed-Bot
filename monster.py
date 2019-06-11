@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 import info
 
 # Create chrome driver
-driver = webdriver.Chrome()
+driver = webdriver.Chrome('./chromedriver.exe')
 
 # Headless chrome driver
 #options.headless = True
@@ -45,17 +45,17 @@ jobs = driver.find_elements_by_class_name('summary')
 # Main window
 main = driver.window_handles[0]
 
-for i in range(2,len(jobs)):
-
+for job in jobs:
+    driver.implicitly_wait(20)
     # Click on each job
-    jobs[i].click()
+    job.click()
 
     driver.implicitly_wait(20)
 
-    if driver.find_element_by_xpath('//*[@id="expired-job-alert"]'):
-        break
+    # if driver.find_element_by_xpath('//*[@id="expired-job-alert"]'):
+    #     break
     # Click on apply job
-    driver.find_element_by_xpath('//*[@id="PrimaryJobApply"]').click()
+    driver.find_element_by_xpath("//a[@id='PrimaryJobApply']").click()
         
     # If open new page, go to that page and close the page
     if len(driver.window_handles) == 2:
@@ -78,4 +78,4 @@ for i in range(2,len(jobs)):
         if driver.find_element_by_xpath('//*[@id="ApplyAlert"]').is_enabled():
             driver.back()
             driver.back()
-        continue
+        break
