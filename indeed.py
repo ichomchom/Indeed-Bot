@@ -77,23 +77,25 @@ class IndeedBot:
             childIframe =  WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
             self.driver.switch_to.frame(childIframe)   
 
-            # Click on continue button if there any
-            continueButton = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]')))
-            
-            
-            if continueButton:
-                continueButton.click()
-                WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//button[@id='form-action-submit']"))).click()
-                self.driver.close()
-                self.driver.switch_to.window(main)
+            # Click on continue button if there any             
+            if WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).is_enabled():
+                WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).click()
+                if WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).is_enabled():
+                    self.driver.close()
+                    self.driver.switch_to.window(main) 
+                else:
+                    WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-submit"]'))).click()
+                    self.driver.close()
+                    self.driver.switch_to.window(main) 
             
 
             #If no button close the window and switch to main window
-            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="form-action-submit"]'))).click()
-            if self.driver.find_element_by_xpath('//*[@id="ia-container"]/div/div[2]/a'):
+            #WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="form-action-submit"]'))).click()
+            #if self.driver.find_element_by_xpath('//*[@id="ia-container"]/div/div[2]/a'):
+            else: 
                 self.driver.close()
                 self.driver.switch_to.window(main)
-                continue
+ 
 
 
 
