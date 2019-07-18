@@ -76,11 +76,12 @@ class IndeedBot:
             # Locate the parent iframe and switch to it
             childIframe =  WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
             self.driver.switch_to.frame(childIframe)   
-
+            conButton = self.driver.find_element_by_xpath('//*[@id="form-action-continue"]')
             # Click on continue button if there any             
-            if WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).is_enabled():
-                WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).click()
-                if WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-continue"]'))).is_enabled():
+            if conButton.is_enabled():
+                self.driver.implicitly_wait(30)
+                conButton.click()
+                if conButton.is_enabled():
                     self.driver.close()
                     self.driver.switch_to.window(main) 
                 else:
