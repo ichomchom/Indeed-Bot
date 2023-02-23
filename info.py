@@ -1,7 +1,7 @@
 # input.py get users input 
-email = 'username@gmail.com'
-password = 'password'
+email = 'jhurleyfilm@gmail.com'
+password = 'dumb1234'
 title = 'software engineer'
-zipCode = '91101'
-name = 'John Do'
-phone = '(xxx) xxx-xxxx'
+zipCode = '10018'
+name = 'John Hurley'
+phone = '(321) 394-6133'

@@ -1,32 +1,42 @@
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver.chrome.options import Options
+from webdriver_manager.chrome import ChromeDriverManager
 import info
+import os
+from dotenv import load_dotenv
+
+# Load the variables from the .env file
+load_dotenv()
+
+#set these up in a .env file in the gitignore so your info is not on github
+username = os.environ.get('USERNAME')
+password = os.environ.get('PASSWORD')
 
 class IndeedBot:
     def __init__(self):
-
         # Create headless chrome
         options = Options()
-        #options.headless = True
+        # options.headless = True
 
         # create a new Chrome session
-        self.driver = webdriver.Chrome('./chromedriver.exe')
-
-
-        # open indeed
+        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
         self.driver.get('https://secure.indeed.com/account/login')
 
         # Get email field
-        emailElem = self.driver.find_element_by_id('login-email-input')
+        emailElem = self.driver.find_element(By.ID, 'ifl-InputFormField-3')
+
         emailElem.send_keys(info.email)
 
+        # click log in with password button
+        loginWithPasswordButton = self.driver.find_element(By.ID, 'auth-page-google-password-fallback')
+        loginWithPasswordButton.click()
+
         # Get password field
-        passElem = self.driver.find_element_by_id('login-password-input')
+        passElem = self.driver.find_element(By.ID, 'ifl-InputFormField-21')
         passElem.send_keys(info.password)
         passElem.submit()
 
@@ -67,37 +77,17 @@ class IndeedBot:
             print('Applying job ' + title)
 
             # Click on Apply Now
-            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'jobsearch-IndeedApplyButton-contentWrapper'))).click()
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_3_31R))).click()
 
-            # Locate the parent iframe and switch to it
-            parentIframe = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@id,'modal-iframe')]")))    
-            self.driver.switch_to.frame(parentIframe)
+            # Close apply with indeed popup
+            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, "popover-x-button-close"))).click()
 
-            # Locate the parent iframe and switch to it
-            childIframe =  WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
-            self.driver.switch_to.frame(childIframe)   
-            conButton = self.driver.find_element_by_xpath('//*[@id="form-action-continue"]')
-            # Click on continue button if there any             
-            if conButton.is_enabled():
-                self.driver.implicitly_wait(30)
-                conButton.click()
-                if conButton.is_enabled():
-                    self.driver.close()
-                    self.driver.switch_to.window(main) 
-                else:
-                    WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-submit"]'))).click()
-                    self.driver.close()
-                    self.driver.switch_to.window(main) 
-            
+            # Fill out job application
+            # TODO: Add code to fill out job application
 
-            #If no button close the window and switch to main window
-            #WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="form-action-submit"]'))).click()
-            #if self.driver.find_element_by_xpath('//*[@id="ia-container"]/div/div[2]/a'):
-            else: 
-                self.driver.close()
-                self.driver.switch_to.window(main)
- 
+            # Go back to main page
+            self.driver.close()
+            self.driver.switch_to.window(main)
 
-
-
-IndeedBot()
+        print('All jobs applied to.')
+        self.driver.quit()
