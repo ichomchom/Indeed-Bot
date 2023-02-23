@@ -6,15 +6,7 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import info
-import os
-from dotenv import load_dotenv
 
-# Load the variables from the .env file
-load_dotenv()
-
-#set these up in a .env file in the gitignore so your info is not on github
-username = os.environ.get('USERNAME')
-password = os.environ.get('PASSWORD')
 
 class IndeedBot:
     def __init__(self):

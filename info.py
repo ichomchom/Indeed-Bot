@@ -1,6 +1,17 @@
+import os
+from dotenv import load_dotenv
+
+# Load the variables from the .env file
+load_dotenv()
+
+#set these up in a .env file in the gitignore so your info is not on github.
+
+
 # input.py get users input 
-email = 'jhurleyfilm@gmail.com'
-password = 'dumb1234'
+email = os.environ.get('USERNAME')
+password = os.environ.get('PASSWORD')
+
+#this info can stay here (its public on github though)
 title = 'software engineer'
 zipCode = '10018'
 name = 'John Hurley'
