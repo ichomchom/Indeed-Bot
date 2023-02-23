@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "selenium": "^2.20.0"
+  },
+  "scripts": {
+    "r": "python3"
   }
 }

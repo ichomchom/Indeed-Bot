@@ -17,10 +17,10 @@ class IndeedBot:
 
         # create a new Chrome session
         self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
-        self.driver.get('https://secure.indeed.com/account/login')
+        self.driver.get('https://secure.indeed.com/auth')
 
         # Get email field
-        email_elem = self.driver.find_element(By.ID, 'signin_email')
+        email_elem = self.driver.find_element_by_css_selector('.i-unmask.css-jorj5j.e8ju0x51')
 
         email_elem.send_keys(info.email)
 
