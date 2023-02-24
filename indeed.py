@@ -16,7 +16,8 @@ class IndeedBot:
         options.add_argument('--disable-gpu')
 
         # create a new Chrome session
-        self.driver = webdriver.Chrome(ChromeDriverManager().install(), options=options)
+        service = webdriver.chrome.service.Service(executable_path=ChromeDriverManager().install())
+        self.driver = webdriver.Chrome(service=service, options=options)
         self.driver.get('https://secure.indeed.com/auth')
 
         # Get email field
