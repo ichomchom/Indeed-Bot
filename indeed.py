@@ -21,7 +21,7 @@ class IndeedBot:
         self.driver.get('https://secure.indeed.com/auth')
 
         # Get email field
-        email_elem = self.driver.find_element_by_css_selector('.i-unmask.css-jorj5j.e8ju0x51')
+        email_elem = self.driver.find_element(By.CLASS_NAME, 'ifl-InputFormField-3')
 
         email_elem.send_keys(info.email)
 
@@ -38,7 +38,7 @@ class IndeedBot:
         self.driver.implicitly_wait(10)
 
         # Redirect to main page
-        self.driver.find_element_by_class_name('indeed-logo').click()
+        self.driver.find_element(By.CLASS_NAME, 'indeed-logo').click()
 
         # Close privacy policy
         self.driver.find_element_by_xpath('/html/body/div[2]/div/section/div/div[2]/button').click()
