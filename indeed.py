@@ -1,125 +1,59 @@
+
+# selenium 4
 from selenium import webdriver
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
-from selenium.webdriver.common.by import By
-from selenium.webdriver.chrome.options import Options
+from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
+from selenium.webdriver.common.by import By
+from selenium.webdriver import Keys, ActionChains
+
 import info
-import time
+from info import *
 
-class IndeedBot:
-    def __init__(self):
-        # Create headless chrome
-        options = Options()
-        options.add_argument('--disable-gpu')
+import time, random
 
-        # create a new Chrome session
-        service = webdriver.chrome.service.Service(executable_path=ChromeDriverManager().install())
-        self.driver = webdriver.Chrome(service=service, options=options)
-        self.driver.get('https://secure.indeed.com/auth')
-
-        # Get email field
-        email_elem = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'ifl-InputFormField-3')))
-        email_elem.send_keys(info.email)
-        
-        #click the continue button
-        # click the continue button
-        continue_button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.i-unmask')))
-        continue_button.click()
+delay = random.randrange(5, 10)
 
 
-        # Click the next button if you have a google account
-        # next_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'gsuite-login-google-button')))
-        # next_button.click()
+sign_in_class = '.çgnav-header-10stsit eu4oa1w0'
+logo_id = 'indeed-globalnav-logo'
+email_input_id = 'ifl-InputFormField-3'
 
-        # Click the next button if you are using normal email
-        next_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'auth-page-google-password-fallback')))
-        next_button.click()
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver.get("https://secure.indeed.com/auth?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2F%3Ffrom%3Dgnav-util-homepage&tmpl=desktop&service=my&from=gnav-util-homepage&jsContinue=https%3A%2F%2Fwww.indeed.com%2F&empContinue=https%3A%2F%2Faccount.indeed.com%2Fmyaccess&_ga=2.133502215.883580095.1677254703-386616490.1675952228")
 
-        # Get password field
-        pass_elem = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'signin_password')))
-        pass_elem.send_keys(info.password)
-        pass_elem.submit()
+# locate email input
+driver.implicitly_wait(30)
+email_input = driver.find_element(by=By.ID, value=email_input_id)
+email_input.click()
 
-        print('Logging in...')
-        self.driver.implicitly_wait(10)
+# write into email input
+ActionChains(driver) \
+    .send_keys_to_element(email_input, info.email) \
+    .perform()
 
-        # Redirect to main page
-        self.driver.find_element(By.CLASS_NAME, 'indeed-logo').click()
+# click on continue
+continue_button = driver.find_element(By.CSS_SELECTOR,".css-jorj5j")
+continue_button.click()
 
-        # Close privacy policy
-        self.driver.find_element_by_xpath('/html/body/div[2]/div/section/div/div[2]/button').click()
+# click continue with google
+# continue_google = driver.find_element(By.CSS_SELECTOR,".css-pahgg8")
+# continue_google.click()
 
-        # get what field
-        what_elem = self.driver.find_element_by_id('text-input-what')
-        what_elem.clear()
-        what_elem.send_keys(info.title)
+# click log in with password
+Btn = driver.find_element(By.CSS_SELECTOR, '.css-1imtygv')
+Btn.click()
 
-        # get where field
-        where_elem = self.driver.find_element_by_id('text-input-where')
-        where_elem.send_keys(Keys.CONTROL, 'a')
-        where_elem.send_keys(info.zipCode)
-        where_elem.submit()
+# click on PW input
+pw_Input = driver.find_element(By.CSS_SELECTOR, '.css-5yee0j')
+pw_Input.click()
 
-        # get list of jobs with apply by indeed only
-        job_list = WebDriverWait(self.driver, 10).until(EC.presence_of_all_elements_located((By.XPATH, '//div[contains(@class, "jobsearch-SerpJobCard")]')))
+# type password
+ActionChains(driver) \
+    .send_keys_to_element(pw_Input, info.password) \
+    .perform()
 
-        # initialize main page
-        main = self.driver.current_window_handle
+# click on sign in
+sign_in_btn = driver.find_element(By.CSS_SELECTOR, '.css-12ypvar')
+sign_in_btn.click()
 
-        # Go through the jobList and open in new tab
-        for job in job_list:
-            job_title_elem = job.find_element(By.CLASS_NAME, 'jobtitle')
-            job_title = job_title_elem.get_attribute('title')
-
-            # Open job in new tab
-            job_title_elem.click()
-
-            # get new tab and switch to it
-            WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
-            job_win = [window for window in self.driver.window_handles if window != main][0]
-            self.driver.switch_to.window(job_win)
-
-            print(f'Applying job {job_title}')
-
-            # Click on Apply Now
-            apply_button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//div[@id="apply-button-container"]//button')))
-            apply_button.click()
-
-            # Close apply with indeed popup
-            close_button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.XPATH, '//button[contains(@class, "popover-x-button-close")]')))
-            close_button.click()
-
-            # Click continue on contact info page
-            contact_continue_button = WebDriverWait(self.driver, 10).until(EC.element_located_selection_state_to_be_clickable((By.XPATH, '//button[contains(@class, "ia-continueButton ia-ContactInfo-continue css-vw73h2 e8ju0x51")]')))
-            contact_continue_button.click()
-
-            # Click continue on add resume for your employer page
-            resume_continue_button = WebDriverWait(self.driver, 10).until(EC.element_located_selection_state_to_be_clickable((By.XPATH, '//button[contains(@class, "ia-continueButton ia-Resume-continue css-vw73h2 e8ju0x51")]')))
-            resume_continue_button.click()
-
-            # Click continue on add resume for your employer page
-            question_continue_button = WebDriverWait(self.driver, 10).until(EC.element_located_selection_state_to_be_clickable((By.XPATH, '//button[contains(@class, "ia-continueButton ia-Question-continue css-vw73h2 e8ju0x51")]')))
-            question_continue_button.click()
-
-            # Click continue on add resume for your employer page
-            relevant_job_continue_button = WebDriverWait(self.driver, 10).until(EC.element_located_selection_state_to_be_clickable((By.XPATH, '//button[contains(@class, "ia-continueButton ia-WorkExperience-continue css-vw73h2 e8ju0x51")]')))
-            relevant_job_continue_button.click()
-
-            # Click continue on add resume for your employer page
-            review_application_button = WebDriverWait(self.driver, 10).until(EC.element_located_selection_state_to_be_clickable((By.XPATH, '//button[contains(@class, "ia-continueButton ia-SupportingDocument-continue css-vw73h2 e8ju0x51")]')))
-            review_application_button.click()
-
-            submit_application_button = WebDriverWait(self.driver, 10).until(EC.element_located_selection_state_to_be_clickable((By.XPATH, '//button[contains(@class, "ia-continueButton css-10eonrg e8ju0x51")]')))
-            submit_application_button.click()
-
-            # Go back to main page
-            self.driver.close()
-            self.driver.switch_to.window(main)
-
-        print('All jobs applied to.')
-        
-
-if __name__ == '__main__':
-    bot = IndeedBot()
+time.sleep(999)

@@ -11,6 +11,7 @@ load_dotenv()
 email = os.environ.get('USERNAME')
 password = os.environ.get('PASSWORD')
 
+
 #this info can stay here (its public on github though)
 title = 'software engineer'
 zipCode = '10018'
