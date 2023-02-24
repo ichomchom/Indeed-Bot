@@ -5,6 +5,15 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
+from fake_useragent import UserAgent
+from selenium.webdriver.chrome.options import Options
+
+
+options = Options()
+ua = UserAgent()
+userAgent = ua.random
+print(userAgent)
+options.add_argument(f'user-agent={userAgent}')
 
 import info
 from info import *
