@@ -24,8 +24,10 @@ class IndeedBot:
         email_elem.send_keys(info.email)
         
         #click the continue button
-        continue_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.TYPE, 'submit')))
+        # click the continue button
+        continue_button = WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.CSS_SELECTOR, 'button.i-unmask')))
         continue_button.click()
+
 
         # Click the next button if you have a google account
         # next_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'gsuite-login-google-button')))
