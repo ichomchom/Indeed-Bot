@@ -6,13 +6,12 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.chrome.options import Options
 from webdriver_manager.chrome import ChromeDriverManager
 import info
-
+import time
 
 class IndeedBot:
     def __init__(self):
         # Create headless chrome
         options = Options()
-        options.add_argument('--headless')
         options.add_argument('--disable-gpu')
 
         # create a new Chrome session
@@ -21,8 +20,7 @@ class IndeedBot:
         self.driver.get('https://secure.indeed.com/auth')
 
         # Get email field
-        email_elem = self.driver.find_element(By.CLASS_NAME, 'ifl-InputFormField-3')
-
+        email_elem = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'ifl-InputFormField-3')))
         email_elem.send_keys(info.email)
 
         # Click the next button
