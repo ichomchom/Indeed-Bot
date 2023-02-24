@@ -15,6 +15,10 @@ import time, random
 x = 5
 y = 10
 
+def delay(): 
+    global x, y
+    # time.sleep(random.randrange(x, y))
+
 sign_in_class = '.çgnav-header-10stsit eu4oa1w0'
 logo_id = 'indeed-globalnav-logo'
 email_input_id = 'ifl-InputFormField-3'
@@ -25,17 +29,17 @@ driver.get("https://secure.indeed.com/auth?hl=en_US&co=US&continue=https%3A%2F%2
 # locate email input
 driver.implicitly_wait(30)
 email_input = driver.find_element(by=By.ID, value=email_input_id)
-time.sleep(random.randrange(x, y))
+delay()
 email_input.click()
 
 # write into email input
-time.sleep(random.randrange(x, y))
+delay()
 ActionChains(driver) \
     .send_keys_to_element(email_input, info.email) \
     .perform()
 
 # click on continue
-time.sleep(random.randrange(x, y))
+delay()
 continue_button = driver.find_element(By.CSS_SELECTOR,".css-jorj5j")
 continue_button.click()
 
@@ -44,23 +48,23 @@ continue_button.click()
 # continue_google.click()
 
 # click log in with password
-time.sleep(random.randrange(x, y))
+delay()
 Btn = driver.find_element(By.CSS_SELECTOR, '.css-1imtygv')
 Btn.click()
 
 # click on PW input
-time.sleep(random.randrange(x, y))
+delay()
 pw_Input = driver.find_element(By.CSS_SELECTOR, '.css-5yee0j')
 pw_Input.click()
 
 # type password
-time.sleep(random.randrange(x, y))
+delay()
 ActionChains(driver) \
     .send_keys_to_element(pw_Input, info.password) \
     .perform()
 
 # click on sign in
-time.sleep(random.randrange(x, y))
+delay()
 sign_in_btn = driver.find_element(By.CSS_SELECTOR, '.css-12ypvar')
 sign_in_btn.click()
 
