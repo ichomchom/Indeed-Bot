@@ -22,9 +22,17 @@ class IndeedBot:
         # Get email field
         email_elem = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'ifl-InputFormField-3')))
         email_elem.send_keys(info.email)
+        
+        #click the continue button
+        continue_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.TYPE, 'submit')))
+        continue_button.click()
 
-        # Click the next button
-        next_button = self.driver.find_element(By.ID, 'login-submit-button')
+        # Click the next button if you have a google account
+        # next_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'gsuite-login-google-button')))
+        # next_button.click()
+
+        # Click the next button if you are using normal email
+        next_button = WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.ID, 'auth-page-google-password-fallback')))
         next_button.click()
 
         # Get password field
@@ -109,7 +117,7 @@ class IndeedBot:
             self.driver.switch_to.window(main)
 
         print('All jobs applied to.')
-        self.driver.quit()
+        
 
 if __name__ == '__main__':
     bot = IndeedBot()
