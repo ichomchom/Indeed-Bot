@@ -20,13 +20,6 @@ from info import *
 
 import time, random
 
-#these are the time intervals for the random sleep function
-x = 5
-y = 10
-
-def delay(): 
-    global x, y
-    # time.sleep(random.randrange(x, y))
 
 sign_in_class = '.çgnav-header-10stsit eu4oa1w0'
 logo_id = 'indeed-globalnav-logo'
