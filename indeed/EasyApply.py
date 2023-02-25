@@ -57,6 +57,9 @@ def easyApply():
             textInputQuestion(currentQuestion)
 
         counter += 1
+    
+    delay()
+    continueButton()
 
     # add job with relevant experience 
     delay()
@@ -65,3 +68,6 @@ def easyApply():
     # click submit 
     delay()
     continueButton()
+
+    # close current tab
+    driver.close()
