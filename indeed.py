@@ -11,8 +11,6 @@ from info import *
 
 import time, random
 
-delay = random.randrange(5, 10)
-
 
 sign_in_class = '.çgnav-header-10stsit eu4oa1w0'
 logo_id = 'indeed-globalnav-logo'
