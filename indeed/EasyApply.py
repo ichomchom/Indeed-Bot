@@ -70,4 +70,4 @@ def easyApply():
     continueButton()
 
     # close current tab
-    driver.close()
+    driver.close()2
