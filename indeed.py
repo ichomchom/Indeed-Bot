@@ -8,7 +8,7 @@ from selenium.webdriver import Keys, ActionChains
 import info
 from info import *
 import time
-
+from EasyApply import *
 
 driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
 driver.get("https://secure.indeed.com/auth?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2F%3Ffrom%3Dgnav-util-homepage&tmpl=desktop&service=my&from=gnav-util-homepage&jsContinue=https%3A%2F%2Fwww.indeed.com%2F&empContinue=https%3A%2F%2Faccount.indeed.com%2Fmyaccess&_ga=2.133502215.883580095.1677254703-386616490.1675952228")
@@ -69,13 +69,12 @@ search_button = driver.find_element(by=By.CLASS_NAME, value='yosegi-InlineWhatWh
 search_button.click()
 
 
-
 ########
 posts_list = driver.find_element(by=By.CLASS_NAME, value='jobsearch-ResultsList')
 posts = posts_list.find_elements(by=By.CLASS_NAME, value='jcs-JobTitle')
 print(len(posts))
 
-def checkEasyApply():
+def checkEasyApply(driver):
     driver.implicitly_wait(3)
     time.sleep(1)
     # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-v0a1gu')
@@ -91,6 +90,7 @@ def checkEasyApply():
     try:
         application_btn = driver.find_element(by=By.CSS_SELECTOR, value='button.css-1ljcmzr.e8ju0x51')
         application_btn.click()
+        easyApply(driver)
     except: pass
 
 
