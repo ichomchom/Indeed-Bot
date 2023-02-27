@@ -75,7 +75,7 @@ posts = posts_list.find_elements(by=By.CLASS_NAME, value='jcs-JobTitle')
 print(len(posts))
 
 def checkEasyApply(driver):
-    driver.implicitly_wait(3)
+    driver.implicitly_wait(30)
     time.sleep(1)
     # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-v0a1gu')
     # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-1hjxf1u')
@@ -88,15 +88,18 @@ def checkEasyApply(driver):
     #     application_btn[0].click()
 
     try:
-        application_btn = driver.find_element(by=By.CSS_SELECTOR, value='button.css-1ljcmzr.e8ju0x51')
+        application_btn = driver.find_element(by=By.CSS_SELECTOR, value='button.e8ju0x51')
         application_btn.click()
+        terminalLogger(message='Easy Apply button found')
         easyApply(driver)
-    except: pass
+    except:
+        terminalLogger(message='Easy Apply button not found') 
+        pass
 
 
 for post in posts:
     post.click()
-    checkEasyApply()
+    checkEasyApply(driver=driver)
     time.sleep(3)
 
 

@@ -37,6 +37,7 @@ def continueButton(driver):
 
 # function to handle easy apply jobs
 def easyApply(driver):
+    print('beginning easy apply process')
     # contact info page
     delay()
     continueButton()
