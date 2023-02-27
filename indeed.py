@@ -52,6 +52,7 @@ ActionChains(driver) \
 
 
 ######### Input job search params
+terminalLogger(message='typing search inputs')
 what_input = driver.find_element(by=By.ID, value='text-input-what')
 where_input = driver.find_element(by=By.ID, value='label-text-input-where')
 
@@ -69,14 +70,16 @@ search_button = driver.find_element(by=By.CLASS_NAME, value='yosegi-InlineWhatWh
 search_button.click()
 
 
+
 ########
 posts_list = driver.find_element(by=By.CLASS_NAME, value='jobsearch-ResultsList')
 posts = posts_list.find_elements(by=By.CLASS_NAME, value='jcs-JobTitle')
 print(len(posts))
 
-def checkEasyApply(driver):
+def checkEasyApply():
     driver.implicitly_wait(30)
-    time.sleep(1)
+    time.sleep(5)
+
     # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-v0a1gu')
     # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-1hjxf1u')
 
@@ -88,7 +91,8 @@ def checkEasyApply(driver):
     #     application_btn[0].click()
 
     try:
-        application_btn = driver.find_element(by=By.CSS_SELECTOR, value='button.e8ju0x51')
+        print('finding apply button..')
+        application_btn = driver.find_element(by=By.CSS_SELECTOR, value='button.css-1bm49rc')
         application_btn.click()
         terminalLogger(message='Easy Apply button found')
         easyApply(driver)
