@@ -5,6 +5,8 @@ from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
 from info import *
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 import random
 import time
 
@@ -13,12 +15,11 @@ import time
 def delay():
     time.sleep(random.uniform(3,7))
 
-def textInputQuestion(currentQuestion, driver): 
-     
+def textInputQuestion(currentQuestion, driver):
     # write the if statement to handle all text input questions where the answer is no
     if 'Do you need' in currentQuestion:
         delay()
-        answer = driver.find_element(By.TAG_NAME, 'textarea')
+        answer = driver.find_element(by=By.TAG_NAME, value='textarea')
         answer.send_keys('No')
     
     if 'linkedin' or 'LinkedIn' in currentQuestion:
@@ -37,15 +38,19 @@ def continueButton(driver):
 
 # function to handle easy apply jobs
 def easyApply(driver):
+    # Wait for the new tab to open
+    WebDriverWait(driver, 10).until(lambda d: len(d.window_handles) > 1)
+    # Switch to the next tab (the second tab)
+    driver.switch_to.window(driver.window_handles[1])
     print('beginning easy apply process')
     # contact info page
     delay()
-    continueButton()
+    continueButton(driver=driver)
     print('clicked continue button on contact info page')
 
     # resume page
     delay()
-    continueButton()
+    continueButton(driver=driver)
     print('clicked continue button on resumé page')
 
     # questions page
