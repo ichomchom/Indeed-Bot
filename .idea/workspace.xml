@@ -5,10 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e5a063e6-4efe-4164-83a4-2c928207bbd2" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/EasyApply.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/indeed/indeed.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/indeed.py" beforeDir="false" afterPath="$PROJECT_DIR$/indeed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/info.py" beforeDir="false" afterPath="$PROJECT_DIR$/info.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
