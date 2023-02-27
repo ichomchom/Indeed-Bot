@@ -4,11 +4,16 @@ from selenium.webdriver.chrome.service import Service as ChromeService
 from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver import Keys, ActionChains
-from fake_useragent import UserAgent
-from indeed import Options
 from info import *
+import random
+import time
 
-def textInputQuestion(currentQuestion): 
+
+# initialize delay function which will return a random value between 3 and 7 seconds
+def delay():
+    time.sleep(random.uniform(3,7))
+
+def textInputQuestion(currentQuestion, driver): 
      
     # write the if statement to handle all text input questions where the answer is no
     if 'Do you need' in currentQuestion:
@@ -26,19 +31,22 @@ def textInputQuestion(currentQuestion):
         answer = driver.find_element(By.TAG_NAME, 'textarea')
         answer.send_keys('Yes')
 
-def continueButton():
+def continueButton(driver):
     continueButton = driver.find_element(By.CLASS_NAME, 'ia-continueButton')
     continueButton.click()
 
 # function to handle easy apply jobs
-def easyApply():
+def easyApply(driver):
+    print('beginning easy apply process')
     # contact info page
     delay()
     continueButton()
+    print('clicked continue button on contact info page')
 
     # resume page
     delay()
     continueButton()
+    print('clicked continue button on resumé page')
 
     # questions page
     delay()
@@ -60,14 +68,19 @@ def easyApply():
     
     delay()
     continueButton()
+    print('clicked continue button on questions page')
 
     # add job with relevant experience 
     delay()
     continueButton()
+    print('clicked continue button on add job page')
 
     # click submit 
     delay()
     continueButton()
+    print('clicked continue button on submit page')
 
     # close current tab
-    driver.close()2
+    driver.close()
+    print('closed current tab')
+
