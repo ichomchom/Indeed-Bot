@@ -23,16 +23,16 @@ def textInputQuestion(currentQuestion, driver):
     
     if 'linkedin' or 'LinkedIn' in currentQuestion:
         delay()
-        answer = driver.find_element(By.TAG_NAME, 'textarea')
+        answer = driver.find_element(by=By.TAG_NAME, value='textarea')
         answer.send_keys('linkedinURL')
 
     else:
         delay()
-        answer = driver.find_element(By.TAG_NAME, 'textarea')
+        answer = driver.find_element(by=By.TAG_NAME, value='textarea')
         answer.send_keys('Yes')
 
 def continueButton(driver):
-    continueButton = driver.find_element(By.CLASS_NAME, 'ia-continueButton')
+    continueButton = driver.find_element(by=By.CLASS_NAME, value='ia-continueButton')
     continueButton.click()
 
 # function to handle easy apply jobs
@@ -51,7 +51,7 @@ def easyApply(driver):
     # questions page
     delay()
     # count number of questions with class of ia-questions-items
-    questions = driver.find_elements(By.CLASS_NAME, 'ia-Questions-item')
+    questions = driver.find_elements(by=By.CLASS_NAME, value='ia-Questions-item')
 
     counter = 0
 
