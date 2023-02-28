@@ -1,13 +1,15 @@
-Dear HR Manager,
+Dear Hiring Manager,
 
-This letter is to express my interest in working for %s at %s. With a Bachelor of Science in Computer Science, and experience with some languages such as Java, Python, C#, and some technologies such as NodeJS, MongoDB, MySQL, Git. I also experienced in troubleshooting, diagnosing, and solving problems in a timely and accurate manner. I am confident 
-that I can be an asset to your organization.
+This letter is to express my interest in working for %s at %s. I have a background in the entertainment industry, where I have honed my skills in project management, problem-solving and team collaboration. Recently, I have completed a code bootcamp where I have developed a strong foundation in software development and programming.
 
-As continuing to learn new languages and development techniques, I enjoy being challenged and engaging with projects that require me to work outside of my comfort. I truly believe in continued education and research, and I hope to bring in my knowledge, organization skill, and positive attitudes that can assist and benefit your company. 
+I am excited about the opportunity to combine my experience in the entertainment industry with my new skills in software engineering. I am confident that my unique background and ability to think creatively and strategically will make me a valuable asset to your team. I am eager to apply my skills to real-world problems and contribute to the development of innovative solutions.
 
-I can be reached anytime via my cell phone, %s or via email at %s. Thank you for your time and consideration.
+I have experience with various programming languages such as such as JS, React, NodeJS, MongoDB, and Git. I also experienced in troubleshooting, diagnosing, and solving problems in a timely and accurate manner. I am confident that I can be an asset to your organization. Additionally, I am familiar with software development methodologies like Agile and Scrum.
+
+I am a quick learner and am always eager to take on new challenges. I am excited about the opportunity to work for a company that is at the forefront of technology and innovation. I am confident that my skills and experience make me an excellent candidate for the Software Engineer role at your company.
+
+Thank you for considering my application. I look forward to the opportunity to speak with you further about my qualifications.
 
 Sincerely,
 
-
-%s
+%
