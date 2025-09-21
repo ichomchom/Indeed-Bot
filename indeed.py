@@ -1,103 +1,144 @@
+
+# selenium 4
 from selenium import webdriver
-from selenium.webdriver.chrome.options import Options
-from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.chrome.service import Service as ChromeService
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
-
+from selenium.webdriver import Keys, ActionChains
 import info
+from info import *
+import time
+from EasyApply import *
 
-class IndeedBot:
-    def __init__(self):
-
-        # Create headless chrome
-        options = Options()
-        #options.headless = True
-
-        # create a new Chrome session
-        self.driver = webdriver.Chrome('./chromedriver.exe')
+driver = webdriver.Chrome(service=ChromeService(ChromeDriverManager().install()))
+driver.get("https://secure.indeed.com/auth?hl=en_US&co=US&continue=https%3A%2F%2Fwww.indeed.com%2F%3Ffrom%3Dgnav-util-homepage&tmpl=desktop&service=my&from=gnav-util-homepage&jsContinue=https%3A%2F%2Fwww.indeed.com%2F&empContinue=https%3A%2F%2Faccount.indeed.com%2Fmyaccess&_ga=2.133502215.883580095.1677254703-386616490.1675952228")
 
 
-        # open indeed
-        self.driver.get('https://secure.indeed.com/account/login')
+def terminalLogger(sleepTime=0.5, message=''):
+    print(message)
+    time.sleep(sleepTime)
+    print('\n')
 
-        # Get email field
-        emailElem = self.driver.find_element_by_id('login-email-input')
-        emailElem.send_keys(info.email)
 
-        # Get password field
-        passElem = self.driver.find_element_by_id('login-password-input')
-        passElem.send_keys(info.password)
-        passElem.submit()
+####### time for user to login manually
+driver.implicitly_wait(999)
 
-        print('Logging in...')
-        self.driver.implicitly_wait(10)
+# locate email input
+terminalLogger(message='Locating email input...')
+email_input = driver.find_element(by=By.ID, value='ifl-InputFormField-3')
+email_input.click()
 
-        # Redirect to main page
-        self.driver.find_element_by_class_name('icl-DesktopGlobalHeader-logoLink').click()
+# write into email input
+terminalLogger(message='typing email...')
+ActionChains(driver) \
+    .send_keys_to_element(email_input, info.email) \
+    .perform()
 
-        # Close privacy policy
-        self.driver.find_element_by_xpath('/html/body/div[2]/div/section/div/div[2]/button').click()
+# click log in with password
+terminalLogger(message='Click log in with password instead...', sleepTime=1)
+Btn = driver.find_element(By.CSS_SELECTOR, '.css-1imtygv')
+Btn.click()
 
-        # get what field
-        whatElem = self.driver.find_element_by_id('text-input-what')
-        #whatElem.clear()
-        whatElem.send_keys(info.title)
+# click on PW input
+terminalLogger(message='Focus on password input')
+pw_Input = driver.find_element(By.CSS_SELECTOR, '.css-5yee0j')
+pw_Input.click()
 
-        # get where field
-        whereElem = self.driver.find_element_by_id('text-input-where')
-        whereElem.send_keys(Keys.CONTROL, 'a')
-        whereElem.send_keys(info.zipCode)
-        whereElem.submit()
- 
-        # get list of jobs with apply by indeed only
-        jobList = self.driver.find_elements_by_class_name('iaP')
+# type password
+terminalLogger(message='Typing password...')
+ActionChains(driver) \
+    .send_keys_to_element(pw_Input, info.password) \
+    .perform()
 
-        # initialize main page
-        main = self.driver.window_handles[0]
 
-        # Go through the jobList and open in new tab
-        for job in jobList:
-            job.click()
+######### Input job search params
+terminalLogger(message='typing search inputs')
+what_input = driver.find_element(by=By.ID, value='text-input-what')
+where_input = driver.find_element(by=By.ID, value='label-text-input-where')
 
-            # get new tab and switch to it
-            jobWin = self.driver.window_handles[1]
-            self.driver.switch_to.window(jobWin)
-            title = self.driver.title
-            print('Applying job ' + title)
+what_input.click()
+ActionChains(driver) \
+    .send_keys_to_element(what_input, info.position) \
+    .perform()
 
-            # Click on Apply Now
-            WebDriverWait(self.driver, 10).until(EC.presence_of_element_located((By.CLASS_NAME, 'jobsearch-IndeedApplyButton-contentWrapper'))).click()
+# where_input.click()
+# ActionChains(driver) \
+#     .send_keys_to_element(where_input, info.where) \
+#     .perform()
 
-            # Locate the parent iframe and switch to it
-            parentIframe = WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@id,'modal-iframe')]")))    
-            self.driver.switch_to.frame(parentIframe)
-
-            # Locate the parent iframe and switch to it
-            childIframe =  WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,"//iframe[contains(@src,'resumeapply')]")))
-            self.driver.switch_to.frame(childIframe)   
-            conButton = self.driver.find_element_by_xpath('//*[@id="form-action-continue"]')
-            # Click on continue button if there any             
-            if conButton.is_enabled():
-                self.driver.implicitly_wait(30)
-                conButton.click()
-                if conButton.is_enabled():
-                    self.driver.close()
-                    self.driver.switch_to.window(main) 
-                else:
-                    WebDriverWait(self.driver, 30).until(EC.presence_of_element_located((By.XPATH,'//*[@id="form-action-submit"]'))).click()
-                    self.driver.close()
-                    self.driver.switch_to.window(main) 
-            
-
-            #If no button close the window and switch to main window
-            #WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.XPATH, '//*[@id="form-action-submit"]'))).click()
-            #if self.driver.find_element_by_xpath('//*[@id="ia-container"]/div/div[2]/a'):
-            else: 
-                self.driver.close()
-                self.driver.switch_to.window(main)
- 
+search_button = driver.find_element(by=By.CLASS_NAME, value='yosegi-InlineWhatWhere-primaryButton')
+search_button.click()
 
 
 
-IndeedBot()
+########
+posts_list = driver.find_element(by=By.CLASS_NAME, value='jobsearch-ResultsList')
+posts = posts_list.find_elements(by=By.CLASS_NAME, value='jcs-JobTitle')
+print(len(posts))
+
+rightPane = driver.find_element(by=By.CSS_SELECTOR, value='div.jobsearch-RightPane')
+
+def checkEasyApply(driver=driver):
+    driver.implicitly_wait(30)
+    time.sleep(5)
+    # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-v0a1gu')
+    # application_btn = driver.find_element(by=By.CLASS_NAME, value='css-1hjxf1u')
+
+    # application_btn = driver.find_elements(by=By.CSS_SELECTOR, value='.jobsearch-IndeedApplyButton-newDesign')
+    # if len(application_btn) == 0:
+    #     pass
+    # else:
+    #     print(application_btn[0].text)
+    #     application_btn[0].click()
+
+    try:
+        print('finding apply button..')
+        application_btn = rightPane.find_element(by=By.CSS_SELECTOR, value='button.css-1bm49rc.e8ju0x51')
+        application_btn.click()
+        terminalLogger(message='Easy Apply button found')
+        easyApply(driver)
+    except:
+        terminalLogger(message='Easy Apply button not found') 
+        pass
+
+
+for post in posts:
+    post.click()
+    checkEasyApply(driver=driver)
+    time.sleep(3)
+
+terminalLogger(message='end script in 5', sleepTime=5)
+
+driver.quit()
+####################################################### Scratched for manual sign in
+
+
+#
+# # click on continue
+# continue_button = driver.find_element(By.CSS_SELECTOR,".css-jorj5j")
+# continue_button.click()
+#
+# # click continue with google
+# # continue_google = driver.find_element(By.CSS_SELECTOR,".css-pahgg8")
+# # continue_google.click()
+#
+# # click log in with password
+# Btn = driver.find_element(By.CSS_SELECTOR, '.css-1imtygv')
+# Btn.click()
+#
+# # click on PW input
+# pw_Input = driver.find_element(By.CSS_SELECTOR, '.css-5yee0j')
+# pw_Input.click()
+#
+# # type password
+# ActionChains(driver) \
+#     .send_keys_to_element(pw_Input, info.password) \
+#     .perform()
+#
+# # click on sign in
+# sign_in_btn = driver.find_element(By.CSS_SELECTOR, '.css-12ypvar')
+# sign_in_btn.click()
+
+#############################################
+
+time.sleep(999)
